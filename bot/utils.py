@@ -7,4 +7,9 @@ def getTimeDelta(futureTimeString, currentTime = datetime.now(timezone.utc)):
             'hours':difference.seconds // 3600, 
             'minutes':(difference.seconds % 3600) // 60, 
             'seconds':difference.seconds}
+
+def collectionToLower(collection):
+    if len(collection) != 0:
+        return [str(elm).casefold() for elm in collection]
+    return None
     

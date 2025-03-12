@@ -1,7 +1,8 @@
 import discord, os
 from discord.ext import commands
 from dotenv import load_dotenv
-from api import API
+from ordis_bot import OrdisBot
+
 
 
 # worldState = functions.getWorldState()
@@ -11,7 +12,7 @@ load_dotenv()
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix='/', intents=intents)
+bot = OrdisBot(command_prefix='/', intents=intents)
 
 @bot.event
 async def on_ready():
@@ -19,7 +20,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
-    await bot.add_cog(API(bot))
+    
 
 @bot.command()
 async def hello(ctx, arg = 'user'):
@@ -30,6 +31,5 @@ async def hello(ctx, arg = 'user'):
 async def shutdown(ctx):
     exit()
 
-#api.bind(bot)
-bot.run(BOT_TOKEN)
 
+bot.run(BOT_TOKEN)
