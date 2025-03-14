@@ -4,10 +4,6 @@ from dotenv import load_dotenv
 from ordis_bot import OrdisBot
 
 
-
-# worldState = functions.getWorldState()
-# print(functions.getDuviriCycle(worldState['duviriCycle']))
-
 load_dotenv()
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 intents = discord.Intents.default()

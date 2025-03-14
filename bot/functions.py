@@ -11,17 +11,20 @@ def getDuviriCycle(worldState):
     worldStateDuviri = worldState['duviriCycle']
     #get all the strings needed from dictionary with world state
     kullervoState = ['anger', 'sorrow', 'fear']
-    expiry = worldStateDuviri['expiry']
-    state = worldStateDuviri['state']
     normalChoices = ', '.join(worldStateDuviri['choices'][0]['choices'])
     hardChoices = ', '.join(worldStateDuviri['choices'][1]['choices'])
-    diff = utils.getTimeDelta(expiry)
+    diff = utils.getTimeDelta(worldStateDuviri['expiry'])
 
-    res = f'Duviri Cycle: {state}, expires in {diff['hours']}h {diff['minutes']}m'
-    if state in kullervoState:
-        res += '\nKullervo spawned'
-    res += f'\nWarframes: {normalChoices}\nIncarnons: {hardChoices}'
+    res = f'> **{worldStateDuviri['state'].upper()}**, expires in {diff['hours']}h {diff['minutes']}m\n'
+    if worldStateDuviri['state'] in kullervoState:
+        res += '> **Kullervo spawned**\n'
+    res += f'> Warframes: {normalChoices}\n> Incarnons: {hardChoices}'
     
+    return res
+
+def getCetusCycle(worldState):
+    worldStateCetus = worldState['cetusCycle']
+    res = f'> **{worldStateCetus['state'].capitalize()}**, {worldStateCetus['shortString']}'
     return res
 
 def getFissures(fissures, *args):
