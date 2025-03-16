@@ -27,6 +27,29 @@ def getCetusCycle(worldState):
     res = f'> **{worldStateCetus['state'].capitalize()}**, {worldStateCetus['shortString']}'
     return res
 
+def getEarthCycle(worldState):
+    worldStateEarth = worldState['earthCycle']
+    nextState = 'day' if worldStateEarth['state'] == 'night' else 'night'
+    res = f'> **{worldStateEarth['state'].capitalize()}**, {nextState} in {worldStateEarth['timeLeft']}'
+    return res
+
+def getCambionCycle(worldState):
+    worldStateCambion = worldState['cambionCycle']
+    nextState = 'vome' if worldStateCambion['state'] == 'fass' else 'fass'
+    res = f'> **{worldStateCambion['state'].capitalize()}**, {nextState} in {worldStateCambion['timeLeft']}'
+    return res
+
+def getVallisCycle(worldState):
+    worldStateVallis = worldState['vallisCycle']
+    res = f'> **{worldStateVallis['state'].capitalize()}**, {worldStateVallis['shortString']}'
+    return res
+
+def getZarimanCycle(worldState):
+    worldStateZariman = worldState['zarimanCycle']
+    res = f'> **{worldStateZariman['state'].capitalize()}, {worldStateZariman['shortString']}'
+    return res
+
+
 def getFissures(fissures, *args):
     procArgs = utils.collectionToLower(args[0])
     if procArgs:
@@ -37,7 +60,8 @@ def getFissures(fissures, *args):
     half = len(fissures)//2
     for i in range(len(fissures)):
         fissure = fissures[i]
-        s = f'> {fissure['tier']}; **{fissure['missionType']}** on {fissure['node']}; Faction: {fissure['enemy']}\n'
+        diff = utils.getTimeDelta(fissure['expiry'])
+        s = f'> {fissure['tier']}; **{fissure['missionType']}** on {fissure['node']}, expires in {diff['hours']}h {diff['minutes']}m\n'
         if (procArgs != None) and (str(fissure['tier']).casefold() not in procArgs):
             continue
 
@@ -47,6 +71,19 @@ def getFissures(fissures, *args):
             res2+= s
     
     return res1, res2
+
+def getSortie(worldState, verbose=False):
+    k = 0
+    worldStateSortie = worldState['sortie']
+    diff = utils.getTimeDelta(worldStateSortie['expiry'])
+    res = f'Sortie expires in {diff['days']} days, {diff['hours']}h {diff['minutes']}'
+    for mission in worldStateSortie['variants']:
+        k+=1
+        if verbose:
+            res += f'\n> {k}. **{mission['missionType']}** on {mission['node']} with {mission['modifier']}: {mission['modifierDescription']}'
+        else:
+            res += f'\n> {k}. **{mission['missionType']}** with {mission['modifier']}'
+    return res
 
 # worldState = getWorldState()
 # print(worldState.keys())
