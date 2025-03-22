@@ -4,5 +4,6 @@ from api import API
 worldState = getWorldState()
 print(worldState.keys())
 print('------')
-print(worldState['fissures'])
+print(worldState['voidTrader'])
 print('------')
+print(getVoidTrader(worldState), len(getVoidTrader(worldState)))

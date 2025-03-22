@@ -82,5 +82,21 @@ def getSortie(worldState, verbose=False):
             res += f'\n> {k}. **{mission['missionType']}** with {mission['modifier']}'
     return res
 
+def getArchonHunt(worldState):
+    k = 0
+    worldStateArchonHunt = worldState['archonHunt']
+    res = f'Archon Hunt expires in {worldStateArchonHunt['eta']}, Boss: **{worldStateArchonHunt['boss']}**'
+    for mission in worldStateArchonHunt['missions']:
+        k+=1
+        res += f'\n> {k}. **{mission['type']}** on {mission['node']}'
+    return res
 
+def getVoidTrader(worldState):
+    k = 0
+    worldStateVoidTrader = worldState['voidTrader']
+    res = f'Void Trader on **{worldStateVoidTrader['location']}**, leaves in {worldStateVoidTrader['endString']}'
+    for item in worldStateVoidTrader['inventory']:
+        k+=1
+        res += f'\n> {k}. **{item['item']}** for {item['ducats']} ducats and {item['credits']} credits'
+    return res
 

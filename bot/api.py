@@ -56,4 +56,14 @@ class API(commands.Cog):
     async def sortie(self, ctx:discord.Interaction, v: str | None = None):
         worldState = getWorldState()
         msg = getSortie(worldState, True) if v != None else getSortie(worldState)
-        await ctx.send(msg)
+        await ctx.response.send_message(msg)
+
+    @app_commands.command(name='archon', description='get current archon hunt information')
+    async def archonHunt(self, ctx:discord.Interaction):
+        worldState = getWorldState()
+        await ctx.response.send_message(getArchonHunt(worldState))
+
+    @app_commands.command(name='voidtrader', description='get current void trader information')
+    async def voidTrader(self, ctx: discord.Interaction):
+        worldState = getWorldState()
+        await ctx.response.send_message(getVoidTrader(worldState))
