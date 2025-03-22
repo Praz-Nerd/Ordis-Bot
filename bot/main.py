@@ -16,12 +16,12 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+
+@bot.tree.command(name='hello', description='Greetings')
+async def hello(interaction: discord.Interaction, arg: str):
+    users = arg.split(' ')
+    await interaction.response.send_message(f'Hello, {users}!')
     
-
-@bot.command()
-async def hello(ctx, arg = 'user'):
-    await ctx.send(f'Hello, {arg}!')
-
 @bot.command()
 @commands.is_owner()
 async def shutdown(ctx):

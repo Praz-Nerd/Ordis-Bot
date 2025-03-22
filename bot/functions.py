@@ -46,37 +46,34 @@ def getVallisCycle(worldState):
 
 def getZarimanCycle(worldState):
     worldStateZariman = worldState['zarimanCycle']
-    res = f'> **{worldStateZariman['state'].capitalize()}, {worldStateZariman['shortString']}'
+    res = f'> **{worldStateZariman['state'].capitalize()}**, {worldStateZariman['shortString']}'
     return res
 
-
-def getFissures(fissures, *args):
-    procArgs = utils.collectionToLower(args[0])
+def getFissures(fissures: list[dict], args: list[str] | None):
+    procArgs = utils.collectionToLower(args)
     if procArgs:
-        fissures = [f for f in fissures if f['tier'].casefold() in procArgs]
+        if procArgs[0] != 'help':
+            fissures = [f for f in fissures if f['tier'].casefold() in procArgs]
+        else:
+            tierSet = set([f['tier'].casefold() for f in fissures])
+            return f'Accepted arguments: {tierSet} (WIP for others)'
+    
     fissures.sort(key= lambda elm: elm['tier'])
-    res1 = ''
-    res2 = ''
-    half = len(fissures)//2
+    res = ''
     for i in range(len(fissures)):
         fissure = fissures[i]
         diff = utils.getTimeDelta(fissure['expiry'])
         s = f'> {fissure['tier']}; **{fissure['missionType']}** on {fissure['node']}, expires in {diff['hours']}h {diff['minutes']}m\n'
         if (procArgs != None) and (str(fissure['tier']).casefold() not in procArgs):
             continue
-
-        if i <= half:
-            res1+= s
-        else:
-            res2+= s
-    
-    return res1, res2
+        res += s
+    return res
 
 def getSortie(worldState, verbose=False):
     k = 0
     worldStateSortie = worldState['sortie']
     diff = utils.getTimeDelta(worldStateSortie['expiry'])
-    res = f'Sortie expires in {diff['days']} days, {diff['hours']}h {diff['minutes']}'
+    res = f'Sortie expires in {diff['days']} days, {diff['hours']}h {diff['minutes']}m'
     for mission in worldStateSortie['variants']:
         k+=1
         if verbose:
@@ -85,8 +82,5 @@ def getSortie(worldState, verbose=False):
             res += f'\n> {k}. **{mission['missionType']}** with {mission['modifier']}'
     return res
 
-# worldState = getWorldState()
-# print(worldState.keys())
-# print('------')
-# print(getFissures(worldState['fissures']))
+
 
