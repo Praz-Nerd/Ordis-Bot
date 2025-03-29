@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 
+
 def getTimeDelta(futureTimeString: str, currentTime = datetime.now(timezone.utc)):
     futureTime = datetime.fromisoformat(futureTimeString.replace("Z", "+00:00"))
     difference = futureTime-currentTime

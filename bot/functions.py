@@ -1,6 +1,7 @@
 import requests
 import json
 import utils
+from datetime import datetime, timezone
 
 def getWorldState(platform = 'pc', language = 'en'):
     res = requests.get(f'https://api.warframestat.us/{platform}?language={language}', 
@@ -93,10 +94,15 @@ def getArchonHunt(worldState):
 
 def getVoidTrader(worldState):
     k = 0
+    res = ''
     worldStateVoidTrader = worldState['voidTrader']
-    res = f'Void Trader on **{worldStateVoidTrader['location']}**, leaves in {worldStateVoidTrader['endString']}'
-    for item in worldStateVoidTrader['inventory']:
-        k+=1
-        res += f'\n> {k}. **{item['item']}** for {item['ducats']} ducats and {item['credits']} credits'
+    startDate = datetime.fromisoformat(worldStateVoidTrader['activation'])
+    if startDate > datetime.now(timezone.utc):
+        res += f'Void Trader appears in {worldStateVoidTrader['startString']}'
+    else:
+        res += f'Void Trader on **{worldStateVoidTrader['location']}**, leaves in {worldStateVoidTrader['endString']}'
+        for item in worldStateVoidTrader['inventory']:
+            k+=1
+            res += f'\n> {k}. **{item['item']}** for {item['ducats']} ducats and {item['credits']} credits'
     return res
 
